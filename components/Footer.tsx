@@ -77,7 +77,7 @@ export default function Footer() {
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
           <p className="text-[13px] text-white/40">
-            © {new Date().getFullYear()} Velv. A portfolio concept.
+            © {new Date().getFullYear()} Velv. All rights reserved.
           </p>
           <div className="flex gap-6">
             {["Privacy", "Terms", "Cookies"].map((item) => (

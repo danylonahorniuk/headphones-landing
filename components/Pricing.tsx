@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { easeOutExpo, viewportOnce } from "@/lib/motion";
@@ -27,6 +28,12 @@ const INCLUDED = [
 export default function Pricing() {
   const { color, setColor } = useColor();
   const variant = VARIANTS.find((v) => v.id === color) ?? VARIANTS[0];
+  const [added, setAdded] = useState(false);
+
+  const handleBuy = () => {
+    setAdded(true);
+    window.setTimeout(() => setAdded(false), 2800);
+  };
 
   return (
     <section id="pricing" className="bg-canvas py-24 sm:py-32">
@@ -133,12 +140,71 @@ export default function Pricing() {
               ))}
             </ul>
 
-            <button className="mt-9 w-full rounded-full bg-ink py-4 text-[15px] font-semibold text-white transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98]">
-              Add to bag — $149
+            <button
+              onClick={handleBuy}
+              disabled={added}
+              className={`mt-9 flex h-[52px] w-full items-center justify-center overflow-hidden rounded-full text-[15px] font-semibold text-white transition-[transform,background-color] duration-300 ${
+                added
+                  ? "bg-accent"
+                  : "bg-ink hover:scale-[1.02] active:scale-[0.98]"
+              }`}
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {added ? (
+                  <motion.span
+                    key="done"
+                    initial={{ y: 18, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -18, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: easeOutExpo }}
+                    className="flex items-center gap-2"
+                  >
+                    <svg
+                      className="h-5 w-5"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      aria-hidden
+                    >
+                      <path
+                        d="M5 10.5l3.2 3.2L15 7"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    Added to bag
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="buy"
+                    initial={{ y: 18, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -18, opacity: 0 }}
+                    transition={{ duration: 0.28, ease: easeOutExpo }}
+                  >
+                    Buy now — $149
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
-            <p className="mt-3 text-center text-[12.5px] text-ink-muted">
-              Or 4 interest-free payments of $37.25
-            </p>
+
+            <div className="relative mt-3 h-4 text-center">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.p
+                  key={added ? "demo" : "installments"}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="absolute inset-x-0 text-[12.5px] text-ink-muted"
+                >
+                  {added
+                    ? "Demo checkout — no payment was taken."
+                    : "Or 4 interest-free payments of $37.25"}
+                </motion.p>
+              </AnimatePresence>
+            </div>
           </div>
         </motion.div>
       </div>

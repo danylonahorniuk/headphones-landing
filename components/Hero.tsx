@@ -86,14 +86,21 @@ export default function Hero() {
         {/* Scroll hint */}
         <motion.div
           style={{ opacity: headlineOpacity }}
-          className="absolute bottom-6 left-1/2 z-20 -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-3"
           aria-hidden
         >
-          <div className="flex h-9 w-[22px] items-start justify-center rounded-full border border-ink-muted/50 p-1.5">
+          <span className="text-[11px] font-medium uppercase tracking-[0.28em] text-ink-muted">
+            Scroll
+          </span>
+          <div className="relative h-11 w-px overflow-hidden bg-ink-muted/25">
             <motion.span
-              animate={{ y: [0, 8, 0] }}
-              transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-              className="h-1.5 w-1.5 rounded-full bg-ink-muted"
+              animate={{ y: ["-110%", "210%"] }}
+              transition={{
+                duration: 1.9,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="absolute inset-x-0 top-0 h-1/2 bg-ink"
             />
           </div>
         </motion.div>

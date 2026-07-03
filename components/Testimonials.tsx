@@ -52,7 +52,7 @@ export default function Testimonials() {
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="grid gap-4 sm:grid-cols-5"
+          className="grid gap-4 sm:grid-cols-5 sm:h-[520px]"
         >
           <motion.div
             variants={fadeUp}
