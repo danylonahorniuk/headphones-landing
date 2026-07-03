@@ -114,6 +114,13 @@ export default function ZoomScroll() {
           />
         </div>
 
+        {/* Bottom scrim — keeps the spec strip readable over the dark product */}
+        <motion.div
+          style={{ opacity: specsOpacity }}
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[42vh] bg-gradient-to-t from-canvas via-canvas/90 to-transparent"
+          aria-hidden
+        />
+
         {/* Spec strip */}
         <motion.div
           style={{ opacity: specsOpacity, y: specsY }}
@@ -122,10 +129,10 @@ export default function ZoomScroll() {
           <div className="mx-auto grid max-w-2xl grid-cols-2 gap-y-6 sm:grid-cols-4">
             {SPECS.map((spec) => (
               <div key={spec.label} className="text-center">
-                <div className="text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-tight text-ink">
+                <div className="text-[clamp(1.5rem,3vw,2rem)] font-semibold tracking-tight text-ink [text-shadow:0_1px_12px_rgba(251,251,253,0.9)]">
                   {spec.value}
                 </div>
-                <div className="mt-1 text-[12px] font-medium uppercase tracking-wide text-ink-muted">
+                <div className="mt-1 text-[12px] font-medium uppercase tracking-wide text-ink-secondary [text-shadow:0_1px_10px_rgba(251,251,253,0.9)]">
                   {spec.label}
                 </div>
               </div>

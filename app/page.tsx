@@ -8,10 +8,11 @@ import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import { ColorProvider } from "@/components/ColorContext";
 
 export default function Home() {
   return (
-    <>
+    <ColorProvider>
       <Navbar />
       <main>
         <Hero />
@@ -24,6 +25,6 @@ export default function Home() {
         <FAQ />
       </main>
       <Footer />
-    </>
+    </ColorProvider>
   );
 }

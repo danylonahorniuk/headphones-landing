@@ -1,15 +1,20 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { easeOutExpo, viewportOnce } from "@/lib/motion";
+import { useColor, type ColorId } from "@/components/ColorContext";
 
-const VARIANTS = [
+const VARIANTS: {
+  id: ColorId;
+  name: string;
+  swatch: string;
+  image: string;
+}[] = [
   { id: "midnight", name: "Midnight", swatch: "#2A2A2E", image: "/images/midnight-two.png" },
   { id: "pearl", name: "Pearl", swatch: "#F0EDE8", image: "/images/pearl-two.png" },
   { id: "storm", name: "Storm", swatch: "#8C8C96", image: "/images/storm-two.png" },
-] as const;
+];
 
 const INCLUDED = [
   "Velv open-fit earbuds",
@@ -20,8 +25,8 @@ const INCLUDED = [
 ];
 
 export default function Pricing() {
-  const [active, setActive] = useState(0);
-  const variant = VARIANTS[active];
+  const { color, setColor } = useColor();
+  const variant = VARIANTS.find((v) => v.id === color) ?? VARIANTS[0];
 
   return (
     <section id="pricing" className="bg-canvas py-24 sm:py-32">
@@ -70,19 +75,19 @@ export default function Pricing() {
             </AnimatePresence>
 
             <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 items-center gap-3">
-              {VARIANTS.map((v, i) => (
+              {VARIANTS.map((v) => (
                 <button
                   key={v.id}
-                  onClick={() => setActive(i)}
+                  onClick={() => setColor(v.id)}
                   aria-label={v.name}
-                  aria-pressed={active === i}
+                  aria-pressed={variant.id === v.id}
                   className="relative flex h-9 w-9 items-center justify-center rounded-full transition-transform duration-200 hover:scale-110 active:scale-95"
                 >
                   <span
                     className="h-6 w-6 rounded-full border border-black/10"
                     style={{ backgroundColor: v.swatch }}
                   />
-                  {active === i && (
+                  {variant.id === v.id && (
                     <motion.span
                       layoutId="price-swatch-ring"
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}

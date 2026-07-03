@@ -22,6 +22,24 @@ const QUOTES = [
     name: "Priya S.",
     role: "Remote lead",
   },
+  {
+    quote:
+      "I switched from in-ear buds that always ached by lunch. These just don't.",
+    name: "Tomasz W.",
+    role: "Software engineer",
+  },
+  {
+    quote:
+      "Battery easily gets me through a full workday of calls and music. No anxiety.",
+    name: "Elena V.",
+    role: "Consultant",
+  },
+  {
+    quote:
+      "They look understated but sound huge. The finish feels genuinely premium.",
+    name: "Marcus L.",
+    role: "Photographer",
+  },
 ];
 
 export default function Testimonials() {
