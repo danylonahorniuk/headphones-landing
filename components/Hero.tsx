@@ -21,10 +21,16 @@ export default function Hero() {
   const headlineOpacity = useTransform(scrollYProgress, [0, 0.28], [1, 0]);
   const headlineY = useTransform(scrollYProgress, [0, 0.28], [0, -60]);
 
-  // Closed case: visible at start, fades out mid-scroll
-  const closedOpacity = useTransform(scrollYProgress, [0.12, 0.42], [1, 0]);
-  // Open case: fades in as closed fades out, then settles
-  const openOpacity = useTransform(scrollYProgress, [0.34, 0.6], [0, 1]);
+  // Three-frame open sequence: closed → lid ajar → fully open.
+  // Each frame cross-fades into the next so the case reads as one
+  // continuous opening motion.
+  const closedOpacity = useTransform(scrollYProgress, [0.2, 0.32], [1, 0]);
+  const ajarOpacity = useTransform(
+    scrollYProgress,
+    [0.2, 0.32, 0.5, 0.62],
+    [0, 1, 1, 0]
+  );
+  const openOpacity = useTransform(scrollYProgress, [0.5, 0.62], [0, 1]);
 
   // Whole product gently scales up through the scroll
   const productScale = useTransform(scrollYProgress, [0, 0.7], [0.86, 1.04]);
@@ -69,6 +75,16 @@ export default function Hero() {
               priority
               sizes="(max-width: 768px) 90vw, 620px"
               className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.14)]"
+            />
+          </motion.div>
+          <motion.div style={{ opacity: ajarOpacity }} className="absolute inset-0">
+            <Image
+              src="/images/midnight-case-ajar.png"
+              alt="Velv charging case opening"
+              fill
+              priority
+              sizes="(max-width: 768px) 90vw, 620px"
+              className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.15)]"
             />
           </motion.div>
           <motion.div style={{ opacity: openOpacity }} className="absolute inset-0">
