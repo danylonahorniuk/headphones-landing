@@ -10,7 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://headphones-landing-one.vercel.app"),
-  title: "Velv — Free your ears.",
+  title: "Velv — Free your ears. Open-fit wireless earbuds.",
   description:
     "Velv open-fit earbuds. Sound that fits, all-day comfort, no silicone tips. 24-hour battery, crystal-clear calls. Starting at $149.",
   keywords: [
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Velv" }],
   openGraph: {
-    title: "Velv — Free your ears.",
+    title: "Velv — Free your ears. Open-fit wireless earbuds.",
     description:
       "Open-fit earbuds designed for all-day comfort. Sound that fits.",
     type: "website",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Velv — Free your ears.",
+    title: "Velv — Free your ears. Open-fit wireless earbuds.",
     description:
       "Open-fit earbuds designed for all-day comfort. Sound that fits.",
   },
