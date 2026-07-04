@@ -19,12 +19,14 @@ const ITEMS: Item[] = [
     desc: "A pair of open-fit buds, tuned and ready.",
     icon: (
       <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
-        <circle cx="7.5" cy="6.3" r="2.1" />
-        <rect x="6.4" y="8.6" width="2.2" height="9.4" rx="1.1" />
-        <circle cx="7.5" cy="11.6" r="0.4" fill="currentColor" stroke="none" />
-        <circle cx="16.5" cy="6.3" r="2.1" />
-        <rect x="15.4" y="8.6" width="2.2" height="9.4" rx="1.1" />
-        <circle cx="16.5" cy="11.6" r="0.4" fill="currentColor" stroke="none" />
+        <g transform="rotate(-20 9 7)">
+          <circle cx="9" cy="6.4" r="2.8" />
+          <path d="M7.6 8.9v6.4a1.4 1.4 0 0 0 2.8 0V8.9" />
+        </g>
+        <g transform="rotate(20 15 7)">
+          <circle cx="15" cy="6.4" r="2.8" />
+          <path d="M13.6 8.9v6.4a1.4 1.4 0 0 0 2.8 0V8.9" />
+        </g>
       </svg>
     ),
   },
