@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://velv-landing.vercel.app"),
+  metadataBase: new URL("https://headphones-landing-one.vercel.app"),
   title: "Velv — Free your ears.",
   description:
     "Velv open-fit earbuds. Sound that fits, all-day comfort, no silicone tips. 24-hour battery, crystal-clear calls. Starting at $149.",
