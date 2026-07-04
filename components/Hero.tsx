@@ -2,10 +2,16 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -36,7 +42,7 @@ export default function Hero() {
 
         {/* Headline */}
         <motion.div
-          style={{ opacity: headlineOpacity, y: headlineY }}
+          style={{ opacity: headlineOpacity, y: reduce ? 0 : headlineY }}
           className="absolute top-[16vh] z-20 px-6 text-center"
         >
           <h1 className="text-balance text-[clamp(2.75rem,8vw,6.5rem)] font-semibold leading-[0.95] tracking-tightest text-ink">
@@ -49,7 +55,10 @@ export default function Hero() {
 
         {/* Product stack */}
         <motion.div
-          style={{ scale: productScale, y: productY }}
+          style={{
+            scale: reduce ? 1 : productScale,
+            y: reduce ? 0 : productY,
+          }}
           className="relative z-10 mt-[8vh] h-[52vh] w-[min(90vw,620px)]"
         >
           <motion.div style={{ opacity: closedOpacity }} className="absolute inset-0">
@@ -76,7 +85,7 @@ export default function Hero() {
 
         {/* Closing caption */}
         <motion.p
-          style={{ opacity: captionOpacity, y: captionY }}
+          style={{ opacity: captionOpacity, y: reduce ? 0 : captionY }}
           className="absolute bottom-[12vh] z-20 max-w-md px-6 text-center text-[15px] leading-relaxed text-ink-secondary"
         >
           Open-fit design. No silicone tips. Just sound that sits comfortably,

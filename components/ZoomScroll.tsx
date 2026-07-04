@@ -2,7 +2,13 @@
 
 import { useRef } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import {
+  motion,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+  MotionValue,
+} from "framer-motion";
 
 /**
  * Scroll-driven zoom through three keyframes.
@@ -27,7 +33,7 @@ function Frame({
   src: string;
   alt: string;
   opacity: MotionValue<number>;
-  scale: MotionValue<number>;
+  scale: MotionValue<number> | number;
   priority?: boolean;
 }) {
   return (
@@ -46,6 +52,7 @@ function Frame({
 
 export default function ZoomScroll() {
   const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -80,7 +87,7 @@ export default function ZoomScroll() {
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Intro copy */}
         <motion.div
-          style={{ opacity: introOpacity, y: introY }}
+          style={{ opacity: introOpacity, y: reduce ? 0 : introY }}
           className="absolute top-[14vh] z-20 px-6 text-center"
         >
           <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent">
@@ -97,20 +104,20 @@ export default function ZoomScroll() {
             src="/images/midnight-two.png"
             alt="Two Velv earbuds"
             opacity={aOpacity}
-            scale={aScale}
+            scale={reduce ? 1 : aScale}
             priority
           />
           <Frame
             src="/images/midnight-one.png"
             alt="A single Velv earbud"
             opacity={bOpacity}
-            scale={bScale}
+            scale={reduce ? 1 : bScale}
           />
           <Frame
             src="/images/midnight-one-closer.png"
             alt="Macro detail of a Velv earbud"
             opacity={cOpacity}
-            scale={cScale}
+            scale={reduce ? 1 : cScale}
           />
         </div>
 
@@ -123,7 +130,7 @@ export default function ZoomScroll() {
 
         {/* Spec strip */}
         <motion.div
-          style={{ opacity: specsOpacity, y: specsY }}
+          style={{ opacity: specsOpacity, y: reduce ? 0 : specsY }}
           className="absolute bottom-[10vh] z-20 w-full px-6"
         >
           <div className="mx-auto grid max-w-2xl grid-cols-2 gap-y-6 sm:grid-cols-4">

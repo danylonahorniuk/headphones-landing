@@ -6,6 +6,7 @@ import {
   motion,
   useScroll,
   useTransform,
+  useReducedMotion,
   MotionValue,
 } from "framer-motion";
 
@@ -49,9 +50,11 @@ const CALLOUTS: Callout[] = [
 function CalloutMarker({
   c,
   progress,
+  reduce,
 }: {
   c: Callout;
   progress: MotionValue<number>;
+  reduce: boolean;
 }) {
   const opacity = useTransform(progress, c.range, [0, 1]);
   const scale = useTransform(progress, c.range, [0.8, 1]);
@@ -67,7 +70,10 @@ function CalloutMarker({
       className="absolute z-10"
     >
       {/* Pulsing dot */}
-      <motion.span style={{ scale }} className="relative flex h-3.5 w-3.5">
+      <motion.span
+        style={{ scale: reduce ? 1 : scale }}
+        className="relative flex h-3.5 w-3.5"
+      >
         <motion.span
           animate={{ scale: [1, 1.9], opacity: [0.6, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
@@ -78,7 +84,7 @@ function CalloutMarker({
 
       {/* Label card */}
       <motion.div
-        style={{ x: cardX }}
+        style={{ x: reduce ? 0 : cardX }}
         className={`absolute top-1/2 w-[150px] -translate-y-1/2 sm:w-52 ${
           c.side === "right"
             ? "left-5 text-left sm:left-8"
@@ -98,6 +104,7 @@ function CalloutMarker({
 
 export default function Features() {
   const ref = useRef<HTMLElement>(null);
+  const reduce = useReducedMotion() ?? false;
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -120,7 +127,7 @@ export default function Features() {
       <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
         {/* Heading — sits above the product, in flow so it never overlaps */}
         <motion.div
-          style={{ opacity: headingOpacity, y: headingY }}
+          style={{ opacity: headingOpacity, y: reduce ? 0 : headingY }}
           className="z-20 px-6 pt-4 text-center"
         >
           <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent">
@@ -133,7 +140,7 @@ export default function Features() {
 
         {/* Floating product + callouts */}
         <motion.div
-          style={{ opacity: imgOpacity, scale: imgScale }}
+          style={{ opacity: imgOpacity, scale: reduce ? 1 : imgScale }}
           className="relative mt-4 h-[56vh] w-[min(84vw,480px)]"
         >
           <Image
@@ -144,7 +151,12 @@ export default function Features() {
             className="object-contain drop-shadow-[0_40px_70px_rgba(20,20,40,0.22)]"
           />
           {CALLOUTS.map((c) => (
-            <CalloutMarker key={c.label} c={c} progress={scrollYProgress} />
+            <CalloutMarker
+              key={c.label}
+              c={c}
+              progress={scrollYProgress}
+              reduce={reduce}
+            />
           ))}
         </motion.div>
       </div>
