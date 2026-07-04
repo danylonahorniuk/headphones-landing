@@ -14,9 +14,26 @@ const LINKS = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const ids = LINKS.map((l) => l.href.slice(1));
+
+    const onScroll = () => {
+      setScrolled(window.scrollY > 24);
+
+      // Active section = the last one whose top has passed the marker line
+      const marker = window.innerHeight * 0.4;
+      let current = "";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && el.getBoundingClientRect().top <= marker) {
+          current = id;
+        }
+      }
+      setActiveId(current);
+    };
+
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -41,16 +58,34 @@ export default function Navbar() {
           </a>
 
           <ul className="hidden items-center gap-8 md:flex">
-            {LINKS.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="text-[13px] font-medium text-ink-secondary transition-colors hover:text-ink"
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
+            {LINKS.map((link) => {
+              const isActive = activeId === link.href.slice(1);
+              return (
+                <li key={link.href}>
+                  <a
+                    href={link.href}
+                    className={`relative text-[13px] font-medium transition-colors ${
+                      isActive
+                        ? "text-ink"
+                        : "text-ink-secondary hover:text-ink"
+                    }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <motion.span
+                        layoutId="nav-active"
+                        transition={{
+                          type: "spring",
+                          stiffness: 400,
+                          damping: 32,
+                        }}
+                        className="absolute -bottom-1.5 left-0 right-0 mx-auto h-1 w-1 rounded-full bg-accent"
+                      />
+                    )}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
 
           <div className="hidden md:block">

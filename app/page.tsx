@@ -8,6 +8,7 @@ import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import StickyBuyBar from "@/components/StickyBuyBar";
 import { ColorProvider } from "@/components/ColorContext";
 import { MotionConfig } from "framer-motion";
 
@@ -27,6 +28,7 @@ export default function Home() {
           <FAQ />
         </main>
         <Footer />
+        <StickyBuyBar />
       </ColorProvider>
     </MotionConfig>
   );
