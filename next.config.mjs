@@ -2,10 +2,10 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    // Project lives in a OneDrive-synced folder; the dev image optimizer
-    // stalls on file locks there. Images are already sensibly sized, so
-    // serve them as-is for reliable rendering.
-    unoptimized: true,
+    // The dev image optimizer stalls on the OneDrive-synced folder, so
+    // serve images as-is locally. In production (Vercel) the optimizer
+    // runs normally for smaller, responsive images.
+    unoptimized: process.env.NODE_ENV === "development",
   },
 };
 
