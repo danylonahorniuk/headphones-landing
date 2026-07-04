@@ -130,7 +130,7 @@ export default function Features() {
           style={{ opacity: headingOpacity, y: reduce ? 0 : headingY }}
           className="z-20 px-6 pt-4 text-center"
         >
-          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent">
             The details
           </p>
           <h2 className="mt-3 text-balance text-[clamp(1.9rem,4.5vw,3.25rem)] font-semibold leading-[1.03] tracking-tighter text-ink">
