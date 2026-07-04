@@ -3,6 +3,8 @@ import Hero from "@/components/Hero";
 import ZoomScroll from "@/components/ZoomScroll";
 import Features from "@/components/Features";
 import Sound from "@/components/Sound";
+import Comparison from "@/components/Comparison";
+import InTheBox from "@/components/InTheBox";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
@@ -22,6 +24,8 @@ export default function Home() {
           <ZoomScroll />
           <Features />
           <Sound />
+          <Comparison />
+          <InTheBox />
           <Gallery />
           <Testimonials />
           <Pricing />
