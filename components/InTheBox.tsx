@@ -19,9 +19,11 @@ const ITEMS: Item[] = [
     desc: "A pair of open-fit buds, tuned and ready.",
     icon: (
       <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
-        {/* Single earbud in profile: rounded bud up top, stem tapering down */}
-        <path d="M13 3.6c3 0 5 2 5 4.9 0 2.3-1.5 3.8-3.4 4.4l-1.2 6.4a1.7 1.7 0 0 1-3.4-.3V13c-1.8-.7-3-2.3-3-4.5 0-2.9 2-4.9 5-4.9Z" />
-        <circle cx="13" cy="8.4" r="0.55" fill="currentColor" stroke="none" />
+        {/* Single earbud in profile, tilted like the product shots */}
+        <g transform="rotate(-18 12 12)">
+          <path d="M8 7.5a4 4 0 0 1 8 0c0 1.6-.9 2.6-2 3.3v6.7a2 2 0 0 1-4 0v-6.7c-1.1-.7-2-1.7-2-3.3Z" />
+          <circle cx="12" cy="13" r="0.55" fill="currentColor" stroke="none" />
+        </g>
       </svg>
     ),
   },
