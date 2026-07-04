@@ -45,7 +45,7 @@ export default function Pricing() {
           transition={{ duration: 0.7, ease: easeOutExpo }}
           className="mx-auto max-w-2xl text-center"
         >
-          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
             Get yours
           </p>
           <h2 className="mt-4 text-balance text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.03] tracking-tighter text-ink">
@@ -112,7 +112,7 @@ export default function Pricing() {
               <span className="text-[clamp(2.5rem,6vw,3.5rem)] font-semibold tracking-tighter text-ink">
                 $149
               </span>
-              <span className="text-[15px] text-ink-muted line-through">$179</span>
+              <span className="text-[15px] text-ink-secondary line-through">$179</span>
             </div>
             <p className="mt-1 text-[14px] text-ink-secondary">
               In {variant.name}. Ships free in 2 days.
@@ -197,7 +197,7 @@ export default function Pricing() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.25 }}
-                  className="absolute inset-x-0 text-[12.5px] text-ink-muted"
+                  className="absolute inset-x-0 text-[12.5px] text-ink-secondary"
                 >
                   {added
                     ? "Demo checkout — no payment was taken."

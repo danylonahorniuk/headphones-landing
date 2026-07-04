@@ -61,7 +61,7 @@ function NewsletterForm() {
                 }}
                 placeholder="Enter your email"
                 aria-label="Email address"
-                className="min-w-0 flex-1 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-[14px] text-white placeholder:text-white/40 outline-none transition-colors focus:border-white/40"
+                className="min-w-0 flex-1 rounded-full border border-white/15 bg-white/5 px-5 py-3 text-[14px] text-white placeholder:text-white/55 outline-none transition-colors focus:border-white/40"
               />
               <button
                 type="submit"
@@ -144,13 +144,13 @@ export default function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <div className="text-[22px] font-semibold tracking-tighter">Velv</div>
-            <p className="mt-3 max-w-[200px] text-[13px] leading-relaxed text-white/45">
+            <p className="mt-3 max-w-[200px] text-[13px] leading-relaxed text-white/55">
               Open-fit earbuds for people who like to hear the world.
             </p>
           </div>
           {COLUMNS.map((col) => (
             <div key={col.title}>
-              <h3 className="text-[13px] font-semibold uppercase tracking-wider text-white/40">
+              <h3 className="text-[13px] font-semibold uppercase tracking-wider text-white/55">
                 {col.title}
               </h3>
               <ul className="mt-4 space-y-3">
@@ -170,7 +170,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
-          <p className="text-[13px] text-white/40">
+          <p className="text-[13px] text-white/55">
             © {new Date().getFullYear()} Velv. All rights reserved.
           </p>
           <div className="flex gap-6">
@@ -178,7 +178,7 @@ export default function Footer() {
               <a
                 key={item}
                 href="#"
-                className="text-[13px] text-white/40 transition-colors hover:text-white/70"
+                className="text-[13px] text-white/55 transition-colors hover:text-white/70"
               >
                 {item}
               </a>

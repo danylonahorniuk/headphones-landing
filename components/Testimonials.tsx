@@ -108,7 +108,7 @@ export default function Testimonials() {
                 <div className="text-[14px] font-semibold text-ink">
                   {q.name}
                 </div>
-                <div className="text-[13px] text-ink-muted">{q.role}</div>
+                <div className="text-[13px] text-ink-secondary">{q.role}</div>
               </figcaption>
             </motion.figure>
           ))}

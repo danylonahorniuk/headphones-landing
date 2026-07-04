@@ -90,7 +90,7 @@ export default function ZoomScroll() {
           style={{ opacity: introOpacity, y: reduce ? 0 : introY }}
           className="absolute top-[14vh] z-20 px-6 text-center"
         >
-          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
             Engineered to disappear
           </p>
           <h2 className="mt-4 text-balance text-[clamp(1.9rem,5vw,3.5rem)] font-semibold leading-[1.02] tracking-tighter text-ink">

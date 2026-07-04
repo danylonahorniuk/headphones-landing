@@ -55,7 +55,7 @@ export default function Comparison() {
           transition={{ duration: 0.7, ease: easeOutExpo }}
           className="mx-auto max-w-2xl text-center"
         >
-          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent">
+          <p className="text-[13px] font-semibold uppercase tracking-[0.2em] text-accent-deep">
             Why open-fit
           </p>
           <h2 className="mt-4 text-balance text-[clamp(2rem,4.5vw,3.25rem)] font-semibold leading-[1.03] tracking-tighter text-ink">
