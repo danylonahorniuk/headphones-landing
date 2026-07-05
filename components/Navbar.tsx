@@ -23,8 +23,9 @@ export default function Navbar() {
     const onScroll = () => {
       setScrolled(window.scrollY > 24);
 
-      // Active section = the last one whose top has passed the marker line
-      const marker = window.innerHeight * 0.4;
+      // Active section = the one currently under the middle of the viewport
+      // (the last section whose top has crossed the centre line).
+      const marker = window.innerHeight * 0.5;
       let current = "";
       for (const id of ids) {
         const el = document.getElementById(id);
