@@ -8,6 +8,7 @@ import InTheBox from "@/components/InTheBox";
 import Gallery from "@/components/Gallery";
 import Testimonials from "@/components/Testimonials";
 import Pricing from "@/components/Pricing";
+import Specs from "@/components/Specs";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import StickyBuyBar from "@/components/StickyBuyBar";
@@ -29,6 +30,7 @@ export default function Home() {
           <Gallery />
           <Testimonials />
           <Pricing />
+          <Specs />
           <FAQ />
         </main>
         <Footer />
