@@ -9,6 +9,7 @@ const LINKS = [
   { label: "Sound", href: "#sound" },
   { label: "Colors", href: "#gallery" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Specs", href: "#specs" },
 ];
 
 export default function Navbar() {
