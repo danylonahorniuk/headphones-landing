@@ -43,8 +43,10 @@ const ITEMS: Item[] = [
     desc: "Braided cable for fast, universal charging.",
     icon: (
       <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
-        <rect x="7.8" y="3.6" width="8.4" height="4" rx="1.1" />
-        <path d="M12 7.6v1.6c0 1.4 3 1.5 3 2.9s-3 1.5-3 2.9 3 1.5 3 2.9v1.5" />
+        {/* USB-C plug head with visible pins, cable trailing below */}
+        <rect x="8.5" y="4" width="7" height="4.6" rx="2.3" />
+        <path d="M10.5 5.4v1.8M13.5 5.4v1.8" />
+        <path d="M12 8.6v2c0 1.4 3 1.4 3 2.8s-3 1.4-3 2.8 3 1.4 3 2.8v1.4" />
       </svg>
     ),
   },
