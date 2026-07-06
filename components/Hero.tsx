@@ -32,8 +32,9 @@ export default function Hero() {
   );
   const openOpacity = useTransform(scrollYProgress, [0.5, 0.62], [0, 1]);
 
-  // Whole product gently scales up through the scroll
-  const productScale = useTransform(scrollYProgress, [0, 0.7], [0.86, 1.04]);
+  // Whole product gently drifts up through the scroll. (No scale —
+  // scaling the drop-shadowed layers forces the browser to re-raster
+  // the shadow filter every frame, which made the hero feel janky.)
   const productY = useTransform(scrollYProgress, [0, 0.7], [20, -10]);
 
   // Closing caption fades in at the end
@@ -61,15 +62,11 @@ export default function Hero() {
 
         {/* Product stack */}
         <motion.div
-          style={{
-            scale: reduce ? 1 : productScale,
-            y: reduce ? 0 : productY,
-            willChange: "transform",
-          }}
+          style={{ y: reduce ? 0 : productY }}
           className="relative z-10 mt-[8vh] h-[52vh] w-[min(90vw,620px)]"
         >
           <motion.div
-            style={{ opacity: closedOpacity, willChange: "opacity" }}
+            style={{ opacity: closedOpacity }}
             className="absolute inset-0"
           >
             <Image
@@ -82,7 +79,7 @@ export default function Hero() {
             />
           </motion.div>
           <motion.div
-            style={{ opacity: ajarOpacity, willChange: "opacity" }}
+            style={{ opacity: ajarOpacity }}
             className="absolute inset-0"
           >
             <Image
@@ -95,7 +92,7 @@ export default function Hero() {
             />
           </motion.div>
           <motion.div
-            style={{ opacity: openOpacity, willChange: "opacity" }}
+            style={{ opacity: openOpacity }}
             className="absolute inset-0"
           >
             <Image

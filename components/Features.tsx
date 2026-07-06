@@ -91,7 +91,7 @@ function CalloutMarker({
             : "right-5 text-right sm:right-8"
         }`}
       >
-        <div className="inline-block rounded-2xl border border-divider/70 bg-white/85 px-4 py-3 shadow-[0_12px_30px_-12px_rgba(20,20,40,0.25)] backdrop-blur-md">
+        <div className="inline-block rounded-2xl border border-divider/70 bg-white/95 px-4 py-3 shadow-[0_12px_30px_-12px_rgba(20,20,40,0.25)] sm:bg-white/85 sm:backdrop-blur-md">
           <div className="text-[14px] font-semibold text-ink">{c.label}</div>
           <div className="mt-1 text-[12.5px] leading-snug text-ink-secondary">
             {c.desc}

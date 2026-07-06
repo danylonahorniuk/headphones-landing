@@ -46,7 +46,7 @@ export default function Navbar() {
       <div
         className={`transition-all duration-500 ease-out-expo ${
           scrolled
-            ? "border-b border-divider/70 bg-canvas/80 backdrop-blur-xl"
+            ? "border-b border-divider/70 bg-canvas/95 md:bg-canvas/80 md:backdrop-blur-xl"
             : "border-b border-transparent bg-transparent"
         }`}
       >

@@ -42,7 +42,7 @@ export default function StickyBuyBar() {
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
           className="fixed inset-x-0 bottom-0 z-40 px-4 pb-4"
         >
-          <div className="mx-auto flex max-w-content items-center justify-between gap-4 rounded-2xl border border-divider/70 bg-canvas/85 px-4 py-3 shadow-[0_12px_40px_-12px_rgba(20,20,40,0.28)] backdrop-blur-xl sm:px-6">
+          <div className="mx-auto flex max-w-content items-center justify-between gap-4 rounded-2xl border border-divider/70 bg-canvas/95 px-4 py-3 shadow-[0_12px_40px_-12px_rgba(20,20,40,0.28)] sm:bg-canvas/85 sm:px-6 sm:backdrop-blur-xl">
             <div className="flex items-center gap-3">
               <span
                 className="hidden h-7 w-7 flex-none rounded-full border border-black/10 sm:block"
