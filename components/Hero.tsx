@@ -41,8 +41,8 @@ export default function Hero() {
   const captionY = useTransform(scrollYProgress, [0.55, 0.8], [24, 0]);
 
   return (
-    <section id="top" ref={ref} className="relative h-[260vh]">
-      <div className="sticky top-0 flex h-screen flex-col items-center justify-center overflow-hidden">
+    <section id="top" ref={ref} className="relative h-[260svh]">
+      <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden">
         {/* Ambient gradient wash */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_0%,#ffffff_0%,#f3f4f8_55%,#eceef3_100%)]" />
 
@@ -64,10 +64,14 @@ export default function Hero() {
           style={{
             scale: reduce ? 1 : productScale,
             y: reduce ? 0 : productY,
+            willChange: "transform",
           }}
           className="relative z-10 mt-[8vh] h-[52vh] w-[min(90vw,620px)]"
         >
-          <motion.div style={{ opacity: closedOpacity }} className="absolute inset-0">
+          <motion.div
+            style={{ opacity: closedOpacity, willChange: "opacity" }}
+            className="absolute inset-0"
+          >
             <Image
               src="/images/midnight-case-closed.png"
               alt="Velv charging case, closed"
@@ -77,7 +81,10 @@ export default function Hero() {
               className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.14)]"
             />
           </motion.div>
-          <motion.div style={{ opacity: ajarOpacity }} className="absolute inset-0">
+          <motion.div
+            style={{ opacity: ajarOpacity, willChange: "opacity" }}
+            className="absolute inset-0"
+          >
             <Image
               src="/images/midnight-case-ajar.png"
               alt="Velv charging case opening"
@@ -87,7 +94,10 @@ export default function Hero() {
               className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.15)]"
             />
           </motion.div>
-          <motion.div style={{ opacity: openOpacity }} className="absolute inset-0">
+          <motion.div
+            style={{ opacity: openOpacity, willChange: "opacity" }}
+            className="absolute inset-0"
+          >
             <Image
               src="/images/midnight-case-open.png"
               alt="Velv earbuds resting in the open case"
