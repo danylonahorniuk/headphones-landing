@@ -32,17 +32,20 @@ export default function Hero() {
   );
   const openOpacity = useTransform(scrollYProgress, [0.5, 0.62], [0, 1]);
 
-  // Whole product gently drifts up through the scroll. (No scale —
-  // scaling the drop-shadowed layers forces the browser to re-raster
-  // the shadow filter every frame, which made the hero feel janky.)
-  const productY = useTransform(scrollYProgress, [0, 0.7], [20, -10]);
+  // Continuous zoom + drift through the whole scroll. This mirrors the
+  // ZoomScroll section: the constant motion is what makes it read as
+  // smooth, and it masks the cross-fades between the three case states.
+  // The case layers carry no drop-shadow filter (a separate gradient
+  // contact-shadow grounds them) so scaling stays cheap to composite.
+  const productScale = useTransform(scrollYProgress, [0, 1], [0.9, 1.08]);
+  const productY = useTransform(scrollYProgress, [0, 1], [24, -18]);
 
   // Closing caption fades in at the end
   const captionOpacity = useTransform(scrollYProgress, [0.55, 0.8], [0, 1]);
   const captionY = useTransform(scrollYProgress, [0.55, 0.8], [24, 0]);
 
   return (
-    <section id="top" ref={ref} className="relative h-[260svh]">
+    <section id="top" ref={ref} className="relative h-[340svh]">
       <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden">
         {/* Ambient gradient wash */}
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_50%_0%,#ffffff_0%,#f3f4f8_55%,#eceef3_100%)]" />
@@ -62,46 +65,44 @@ export default function Hero() {
 
         {/* Product stack */}
         <motion.div
-          style={{ y: reduce ? 0 : productY }}
+          style={{
+            y: reduce ? 0 : productY,
+            scale: reduce ? 1 : productScale,
+          }}
           className="relative z-10 mt-[8vh] h-[52vh] w-[min(90vw,620px)]"
         >
-          <motion.div
-            style={{ opacity: closedOpacity }}
-            className="absolute inset-0"
-          >
+          {/* Soft contact shadow — a gradient (not a filter) so it stays
+              cheap to composite while the stack scales. */}
+          <div className="pointer-events-none absolute bottom-[13%] left-1/2 h-[9%] w-[58%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(20,20,40,0.22)_0%,transparent_72%)]" />
+
+          <motion.div style={{ opacity: closedOpacity }} className="absolute inset-0">
             <Image
               src="/images/midnight-case-closed.png"
               alt="Velv charging case, closed"
               fill
               priority
               sizes="(max-width: 768px) 90vw, 620px"
-              className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.14)]"
+              className="object-contain"
             />
           </motion.div>
-          <motion.div
-            style={{ opacity: ajarOpacity }}
-            className="absolute inset-0"
-          >
+          <motion.div style={{ opacity: ajarOpacity }} className="absolute inset-0">
             <Image
               src="/images/midnight-case-ajar.png"
               alt="Velv charging case opening"
               fill
               priority
               sizes="(max-width: 768px) 90vw, 620px"
-              className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.15)]"
+              className="object-contain"
             />
           </motion.div>
-          <motion.div
-            style={{ opacity: openOpacity }}
-            className="absolute inset-0"
-          >
+          <motion.div style={{ opacity: openOpacity }} className="absolute inset-0">
             <Image
               src="/images/midnight-case-open.png"
               alt="Velv earbuds resting in the open case"
               fill
               priority
               sizes="(max-width: 768px) 90vw, 620px"
-              className="object-contain drop-shadow-[0_40px_60px_rgba(20,20,40,0.16)]"
+              className="object-contain"
             />
           </motion.div>
         </motion.div>
