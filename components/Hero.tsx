@@ -114,8 +114,8 @@ export default function Hero() {
   const captionY = useTransform(scrollYProgress, [0.62, 0.85], [24, 0]);
 
   return (
-    <section id="top" ref={ref} className="relative h-[calc(var(--vh,1vh)*340)]">
-      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] flex-col items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#EBEBEE_0%,#F1F1F3_46%,#F7F6F7_100%)]">
+    <section id="top" ref={ref} className="relative h-[340svh]">
+      <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden bg-[linear-gradient(180deg,#EBEBEE_0%,#F1F1F3_46%,#F7F6F7_100%)]">
         {/* Headline */}
         <motion.div
           style={{ opacity: headlineOpacity, y: reduce ? 0 : headlineY }}

@@ -127,8 +127,8 @@ export default function Features() {
   const imgScale = useTransform(scrollYProgress, [0, 0.5], [0.96, 1.02]);
 
   return (
-    <section id="features" ref={ref} className="relative h-[calc(var(--vh,1vh)*300)] bg-section">
-      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] flex-col items-center justify-center overflow-hidden">
+    <section id="features" ref={ref} className="relative h-[300svh] bg-section">
+      <div className="sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden">
         {/* Heading — sits above the product, in flow so it never overlaps */}
         <motion.div
           style={{ opacity: headingOpacity, y: reduce ? 0 : headingY }}

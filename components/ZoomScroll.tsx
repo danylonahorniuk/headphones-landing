@@ -83,8 +83,8 @@ export default function ZoomScroll() {
   const specsY = useTransform(scrollYProgress, [0.8, 0.94], [30, 0]);
 
   return (
-    <section id="overview" ref={ref} className="relative h-[calc(var(--vh,1vh)*340)] bg-canvas">
-      <div className="sticky top-0 flex h-[calc(var(--vh,1vh)*100)] items-center justify-center overflow-hidden">
+    <section id="overview" ref={ref} className="relative h-[340svh] bg-canvas">
+      <div className="sticky top-0 flex h-[100svh] items-center justify-center overflow-hidden">
         {/* Intro copy */}
         <motion.div
           style={{ opacity: introOpacity, y: reduce ? 0 : introY }}
