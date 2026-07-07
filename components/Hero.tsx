@@ -121,10 +121,10 @@ export default function Hero() {
               // top fade finish at 7% — above where the buds fly (~10%) — so
               // the hard top edge disappears without clipping the earbuds.
               maskImage:
-                "radial-gradient(46% 100% at 50% 50%, #000 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 88%, transparent 100%)",
+                "radial-gradient(44% 100% at 50% 50%, #000 54%, transparent 72%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 86%, transparent 98%)",
               maskComposite: "intersect",
               WebkitMaskImage:
-                "radial-gradient(46% 100% at 50% 50%, #000 55%, transparent 100%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 88%, transparent 100%)",
+                "radial-gradient(44% 100% at 50% 50%, #000 54%, transparent 72%), linear-gradient(to bottom, transparent 0%, #000 7%, #000 86%, transparent 98%)",
               WebkitMaskComposite: "source-in",
             }}
             className="absolute inset-0 transition-opacity duration-500"
