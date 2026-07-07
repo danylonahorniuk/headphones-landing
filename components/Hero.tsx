@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   motion,
   useScroll,
@@ -13,16 +13,25 @@ import {
 // and the buds lifting out (rendered on a light-gray studio backdrop). We
 // scrub it with the scroll position instead of playing it, so the motion is
 // perfectly tied to how far the user has scrolled.
+//
+// Frames are painted into a <canvas> with ctx.drawImage rather than swapping
+// an <img> src. drawImage is synchronous, so every frame the scroll asks for
+// actually paints — on mobile an <img>.src swap decodes asynchronously and
+// rapid scrubbing skips most frames, which reads as a jumpy 3-step animation.
 const FRAME_COUNT = 121;
+const FRAME_SIZE = 760;
 const framePath = (i: number) =>
   `/images/hero-sequence/f_${String(i).padStart(3, "0")}.webp`;
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const imgRef = useRef<HTMLImageElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const rafPending = useRef(false);
+  const targetIdx = useRef(0);
   const reduce = useReducedMotion();
-  // Reveal as soon as the first frame paints (it's tiny) — we never wait for
-  // the whole sequence, so the hero is never left with an empty centre.
+  // Reveal as soon as the first frame paints — we never wait for the whole
+  // sequence, so the hero is never left with an empty centre.
   const [firstReady, setFirstReady] = useState(false);
 
   const { scrollYProgress } = useScroll({
@@ -30,43 +39,65 @@ export default function Hero() {
     offset: ["start start", "end end"],
   });
 
-  // Warm the cache for the rest of the frames in the background so scrubbing
-  // only swaps a cached <img> src — no network fetch mid-scroll. Frame 1 is
-  // already requested by the visible <img>, so start from 2.
+  // Scroll → frame index. Small holds at each end keep the closed case on
+  // screen while the headline is up, and let the fully-open shot settle
+  // before the section releases.
+  const frame = useTransform(scrollYProgress, [0.06, 0.9], [1, FRAME_COUNT], {
+    clamp: true,
+  });
+
+  const drawFrame = useCallback((idx: number) => {
+    const canvas = canvasRef.current;
+    const img = imagesRef.current[idx];
+    if (!canvas || !img || !img.complete || img.naturalWidth === 0) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  }, []);
+
+  // Preload every frame (and keep the references alive so their decoded data
+  // stays warm), then reveal + paint the first visible frame as soon as it's
+  // ready.
   useEffect(() => {
     const imgs: HTMLImageElement[] = [];
-    for (let i = 2; i <= FRAME_COUNT; i++) {
+    for (let i = 1; i <= FRAME_COUNT; i++) {
       const img = new window.Image();
       img.src = framePath(i);
       imgs.push(img);
     }
-    return () => {
-      imgs.length = 0;
+    imagesRef.current = imgs;
+
+    const startIdx = reduce
+      ? 95
+      : Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(frame.get()) - 1));
+    targetIdx.current = startIdx;
+
+    const reveal = () => {
+      setFirstReady(true);
+      drawFrame(startIdx);
     };
-  }, []);
+    const startImg = imgs[startIdx];
+    if (startImg.complete && startImg.naturalWidth) reveal();
+    else startImg.onload = reveal;
+    startImg.decode?.().then(reveal).catch(() => {});
 
-  // If frame 1 was already cached (or decoded before hydration), the <img>'s
-  // onLoad may have fired before React attached its handler — reveal it here
-  // so the hero is never stuck invisible.
-  useEffect(() => {
-    if (imgRef.current?.complete) setFirstReady(true);
-  }, []);
-
-  // Scroll → frame index. Small holds at each end keep the closed case on
-  // screen while the headline is up, and let the fully-open shot settle
-  // before the section releases.
-  const frame = useTransform(
-    scrollYProgress,
-    [0.06, 0.9],
-    [1, FRAME_COUNT],
-    { clamp: true }
-  );
+    return () => {
+      imgs.forEach((im) => (im.onload = null));
+      imagesRef.current = [];
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reduce, drawFrame]);
 
   useMotionValueEvent(frame, "change", (v) => {
     if (reduce) return;
-    const i = Math.min(FRAME_COUNT, Math.max(1, Math.round(v)));
-    const el = imgRef.current;
-    if (el) el.src = framePath(i);
+    targetIdx.current = Math.min(FRAME_COUNT, Math.max(1, Math.round(v))) - 1;
+    if (rafPending.current) return;
+    rafPending.current = true;
+    requestAnimationFrame(() => {
+      rafPending.current = false;
+      drawFrame(targetIdx.current);
+    });
   });
 
   // Headline fades/lifts away as you scroll in
@@ -81,9 +112,6 @@ export default function Hero() {
   // Closing caption fades in at the end
   const captionOpacity = useTransform(scrollYProgress, [0.62, 0.85], [0, 1]);
   const captionY = useTransform(scrollYProgress, [0.62, 0.85], [24, 0]);
-
-  // Reduced motion: hold a single "buds lifting out" still.
-  const initialFrame = framePath(reduce ? 96 : 1);
 
   return (
     <section id="top" ref={ref} className="relative h-[340svh]">
@@ -102,8 +130,8 @@ export default function Hero() {
         </motion.div>
 
         {/* Product frame sequence — the square studio shot is feathered at
-            its edges (radial mask) so it dissolves into the matching
-            light-gray page wash instead of reading as a hard-edged box. */}
+            its edges so it dissolves into the matching light-gray page wash
+            instead of reading as a hard-edged box. */}
         <motion.div
           style={{
             y: reduce ? 0 : productY,
@@ -129,15 +157,13 @@ export default function Hero() {
             }}
             className="absolute inset-0 transition-opacity duration-500"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              ref={imgRef}
-              src={initialFrame}
-              alt="Velv charging case opening as the earbuds lift out"
-              width={760}
-              height={760}
-              onLoad={() => setFirstReady(true)}
-              className="h-full w-full object-contain"
+            <canvas
+              ref={canvasRef}
+              width={FRAME_SIZE}
+              height={FRAME_SIZE}
+              role="img"
+              aria-label="Velv charging case opening as the earbuds lift out"
+              className="h-full w-full"
             />
           </div>
         </motion.div>
