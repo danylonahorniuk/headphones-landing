@@ -19,8 +19,16 @@ export default function Navbar() {
 
   useEffect(() => {
     const ids = LINKS.map((l) => l.href.slice(1));
+    let ticking = false;
 
-    const onScroll = () => {
+    // Reads (getBoundingClientRect) are coalesced to once per animation
+    // frame. Running this synchronously on every native scroll event is
+    // enough layout-thrashing on Chrome/WebView mobile to make the main
+    // thread fall behind the scroll gesture, which then "catches up" in
+    // visible jumps — Safari's independent compositor hides that jank, so
+    // it only showed up in Chrome-based browsers.
+    const measure = () => {
+      ticking = false;
       setScrolled(window.scrollY > 24);
 
       // Active section = the one currently under the middle of the viewport
@@ -36,7 +44,13 @@ export default function Navbar() {
       setActiveId(current);
     };
 
-    onScroll();
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(measure);
+    };
+
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

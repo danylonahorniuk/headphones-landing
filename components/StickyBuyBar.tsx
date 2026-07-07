@@ -17,7 +17,13 @@ export default function StickyBuyBar() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
+    let ticking = false;
+
+    // Coalesce the getBoundingClientRect read to once per animation frame —
+    // see the matching comment in Navbar.tsx for why this matters on
+    // Chrome/WebView mobile.
+    const measure = () => {
+      ticking = false;
       const pastHero = window.scrollY > window.innerHeight * 0.9;
       // Hide once the pricing section reaches the lower part of the viewport
       // — the bar is redundant there (and near the footer CTA).
@@ -27,7 +33,14 @@ export default function StickyBuyBar() {
         : false;
       setVisible(pastHero && !pricingReached);
     };
-    onScroll();
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(measure);
+    };
+
+    measure();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
