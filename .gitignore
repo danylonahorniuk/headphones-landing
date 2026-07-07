@@ -7,3 +7,7 @@
 .DS_Store
 *.tsbuildinfo
 next-env.d.ts
+
+# Source video for the hero frame sequence — frames are extracted into
+# public/images/hero-sequence/, the raw clip is kept only locally.
+kling-new-video.mp4
