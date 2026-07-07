@@ -1,24 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
-// Mobile browsers fire `resize` when the address bar hides/shows during a
-// scroll gesture — on BOTH iOS Safari and Android Chrome/WebView — even
-// though only the height changed, not the width. Our pinned sections are
-// hundreds of viewport-heights tall, so reacting to that resize (even after
-// a debounce) recalculates every one of them *while the user is mid-scroll*,
-// which reads as the page jumping between sections.
+// Mobile Chrome (and Chromium-based in-app browsers like Telegram's) can
+// actually resize `window.innerHeight` while the address bar hides/shows
+// mid-scroll — unlike iOS Safari, which mostly doesn't reflow the layout
+// viewport for this. Our pinned sections are hundreds of svh tall, so if a
+// browser's viewport-unit support is inconsistent, that live resize forces a
+// layout recalculation of every one of them *during* the scroll gesture,
+// which reads as violent jumps between sections (worst when scrolling up,
+// since that's when the bar reappears).
 //
-// The fix: only update `--vh` when the *width* changes. A toolbar
-// show/hide never changes width — only a real resize or orientation change
-// does — so this reliably tells the two apart without needing to guess at
-// a height-delta threshold.
+// The fix predates svh/dvh: freeze the viewport height in a CSS variable via
+// JS, updated only on resize/orientation change — never on scroll — so
+// section heights stay put for the whole gesture regardless of toolbar
+// animation or viewport-unit quirks in a given WebView.
 export default function ViewportHeightVar() {
-  const lastWidth = useRef<number | null>(null);
-
   useEffect(() => {
     const setVh = () => {
-      lastWidth.current = window.innerWidth;
       document.documentElement.style.setProperty(
         "--vh",
         `${window.innerHeight * 0.01}px`
@@ -26,14 +25,16 @@ export default function ViewportHeightVar() {
     };
     setVh();
 
+    let resizeTimer: ReturnType<typeof setTimeout>;
     const onResize = () => {
-      if (window.innerWidth === lastWidth.current) return;
-      setVh();
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(setVh, 150);
     };
 
     window.addEventListener("resize", onResize);
     window.addEventListener("orientationchange", setVh);
     return () => {
+      clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("orientationchange", setVh);
     };
