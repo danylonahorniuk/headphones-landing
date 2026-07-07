@@ -1,52 +1,48 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+import Image from "next/image";
 import {
   motion,
   useScroll,
   useTransform,
-  useMotionValueEvent,
   useReducedMotion,
 } from "framer-motion";
-
-const FRAME_COUNT = 48;
-const framePath = (n: number) =>
-  `/images/hero-sequence/hero_${String(n).padStart(2, "0")}.png`;
 
 export default function Hero() {
   const ref = useRef<HTMLElement>(null);
   const reduce = useReducedMotion();
-  const [frame, setFrame] = useState(1);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
-  // Preload every frame once on mount so scrubbing never shows a blank/loading frame.
-  useEffect(() => {
-    for (let i = 1; i <= FRAME_COUNT; i++) {
-      const img = new window.Image();
-      img.src = framePath(i);
-    }
-  }, []);
+  // Headline fades/lifts away as you scroll in
+  const headlineOpacity = useTransform(scrollYProgress, [0, 0.28], [1, 0]);
+  const headlineY = useTransform(scrollYProgress, [0, 0.28], [0, -60]);
 
-  // Real extracted video frames scrubbed by scroll position — the same
-  // technique as a canvas image-sequence, giving continuous motion
-  // instead of cross-fading between a handful of keyframes.
-  const frameMV = useTransform(scrollYProgress, [0.05, 0.75], [1, FRAME_COUNT]);
-  useMotionValueEvent(frameMV, "change", (v) => {
-    const next = Math.min(FRAME_COUNT, Math.max(1, Math.round(v)));
-    setFrame((prev) => (prev === next ? prev : next));
-  });
+  // Three-frame open sequence: closed → lid ajar → fully open.
+  // Each frame cross-fades into the next so the case reads as one
+  // continuous opening motion.
+  const closedOpacity = useTransform(scrollYProgress, [0.2, 0.32], [1, 0]);
+  const ajarOpacity = useTransform(
+    scrollYProgress,
+    [0.2, 0.32, 0.5, 0.62],
+    [0, 1, 1, 0]
+  );
+  const openOpacity = useTransform(scrollYProgress, [0.5, 0.62], [0, 1]);
 
-  const headlineOpacity = useTransform(scrollYProgress, [0, 0.18], [1, 0]);
-  const headlineY = useTransform(scrollYProgress, [0, 0.18], [0, -60]);
-
+  // Continuous zoom + drift through the whole scroll. This mirrors the
+  // ZoomScroll section: the constant motion is what makes it read as
+  // smooth, and it masks the cross-fades between the three case states.
+  // The case layers carry no drop-shadow filter (a separate gradient
+  // contact-shadow grounds them) so scaling stays cheap to composite.
+  const productScale = useTransform(scrollYProgress, [0, 1], [0.9, 1.08]);
   const productY = useTransform(scrollYProgress, [0, 1], [24, -18]);
-  const productScale = useTransform(scrollYProgress, [0, 1], [0.92, 1.08]);
 
-  const captionOpacity = useTransform(scrollYProgress, [0.68, 0.85], [0, 1]);
-  const captionY = useTransform(scrollYProgress, [0.68, 0.85], [24, 0]);
+  // Closing caption fades in at the end
+  const captionOpacity = useTransform(scrollYProgress, [0.55, 0.8], [0, 1]);
+  const captionY = useTransform(scrollYProgress, [0.55, 0.8], [24, 0]);
 
   return (
     <section id="top" ref={ref} className="relative h-[340svh]">
@@ -67,7 +63,7 @@ export default function Hero() {
           </p>
         </motion.div>
 
-        {/* Product — scroll-scrubbed frame sequence */}
+        {/* Product stack */}
         <motion.div
           style={{
             y: reduce ? 0 : productY,
@@ -79,14 +75,36 @@ export default function Hero() {
               cheap to composite while the stack scales. */}
           <div className="pointer-events-none absolute bottom-[13%] left-1/2 h-[9%] w-[58%] -translate-x-1/2 rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(20,20,40,0.22)_0%,transparent_72%)]" />
 
-          {/* eslint-disable-next-line @next/next/no-img-element -- rapid
-              scroll-scrubbed src swaps don't suit next/image's loading
-              pipeline; frames are preloaded above so swaps are instant. */}
-          <img
-            src={framePath(frame)}
-            alt="Velv earbuds opening from the charging case"
-            className="absolute inset-0 h-full w-full object-contain"
-          />
+          <motion.div style={{ opacity: closedOpacity }} className="absolute inset-0">
+            <Image
+              src="/images/midnight-case-closed.png"
+              alt="Velv charging case, closed"
+              fill
+              priority
+              sizes="(max-width: 768px) 90vw, 620px"
+              className="object-contain"
+            />
+          </motion.div>
+          <motion.div style={{ opacity: ajarOpacity }} className="absolute inset-0">
+            <Image
+              src="/images/midnight-case-ajar.png"
+              alt="Velv charging case opening"
+              fill
+              priority
+              sizes="(max-width: 768px) 90vw, 620px"
+              className="object-contain"
+            />
+          </motion.div>
+          <motion.div style={{ opacity: openOpacity }} className="absolute inset-0">
+            <Image
+              src="/images/midnight-case-open.png"
+              alt="Velv earbuds resting in the open case"
+              fill
+              priority
+              sizes="(max-width: 768px) 90vw, 620px"
+              className="object-contain"
+            />
+          </motion.div>
         </motion.div>
 
         {/* Closing caption */}
