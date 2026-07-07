@@ -81,11 +81,12 @@ export default function Sound() {
               style={{ height: `${h}%` }}
             >
               <motion.span
-                animate={{ scaleY: [1, 0.6 + (h / 200), 1] }}
+                animate={{ scaleY: [0.35, 1, 0.5, 0.85, 0.35] }}
                 transition={{
-                  duration: 1.4 + (i % 5) * 0.2,
+                  duration: 1.1 + (i % 7) * 0.15,
                   repeat: Infinity,
                   ease: "easeInOut",
+                  delay: (i % 5) * 0.12,
                 }}
                 className="block h-full w-full origin-bottom rounded-full bg-inherit"
               />

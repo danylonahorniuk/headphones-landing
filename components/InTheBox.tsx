@@ -18,7 +18,7 @@ const ITEMS: Item[] = [
     title: "Velv Earbuds",
     desc: "A pair of open-fit buds, tuned and ready.",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
+      <svg viewBox="0 0 24 24" className="h-8 w-8" {...stroke}>
         {/* Single earbud in profile, tilted like the product shots */}
         <g transform="rotate(-18 12 12)">
           <path d="M8 7.5a4 4 0 0 1 8 0c0 1.6-.9 2.6-2 3.3v6.7a2 2 0 0 1-4 0v-6.7c-1.1-.7-2-1.7-2-3.3Z" />
@@ -31,7 +31,7 @@ const ITEMS: Item[] = [
     title: "Charging Case",
     desc: "Pocketable case with 24 hours of backup power.",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
+      <svg viewBox="0 0 24 24" className="h-8 w-8" {...stroke}>
         <rect x="4" y="7" width="16" height="12" rx="4" />
         <path d="M9 7V6a3 3 0 0 1 3-3 3 3 0 0 1 3 3v1" />
         <path d="M13 10.2 10.6 13.8h1.8L11.6 17l3-4.4h-1.8Z" />
@@ -42,7 +42,7 @@ const ITEMS: Item[] = [
     title: "USB-C Cable",
     desc: "Braided cable for fast, universal charging.",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
+      <svg viewBox="0 0 24 24" className="h-8 w-8" {...stroke}>
         {/* USB-C plug head with visible pins, cable trailing below */}
         <rect x="8.5" y="4" width="7" height="4.6" rx="2.3" />
         <path d="M10.5 5.4v1.8M13.5 5.4v1.8" />
@@ -54,7 +54,7 @@ const ITEMS: Item[] = [
     title: "Quick Start Guide",
     desc: "Pair and go in under a minute.",
     icon: (
-      <svg viewBox="0 0 24 24" className="h-7 w-7" {...stroke}>
+      <svg viewBox="0 0 24 24" className="h-8 w-8" {...stroke}>
         <path d="M12 6.5v14" />
         <path d="M3.5 17.5a1 1 0 0 1-1-1V5.5a1 1 0 0 1 1-1h4A4.5 4.5 0 0 1 12 9a4.5 4.5 0 0 1 4.5-4.5h4a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-5a3 3 0 0 0-3 3 3 3 0 0 0-3-3Z" />
       </svg>
@@ -86,21 +86,21 @@ export default function InTheBox() {
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="mx-auto mt-14 grid max-w-4xl gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="mx-auto mt-16 grid max-w-5xl gap-6 sm:grid-cols-2 lg:grid-cols-4"
         >
           {ITEMS.map((item) => (
             <motion.div
               key={item.title}
               variants={fadeUp}
-              className="rounded-[24px] border border-divider bg-canvas p-7"
+              className="rounded-[32px] border border-divider bg-canvas p-9"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-accent-tint text-accent-deep">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-accent-tint text-accent-deep">
                 {item.icon}
               </div>
-              <h3 className="mt-5 text-[16px] font-semibold text-ink">
+              <h3 className="mt-7 text-[17px] font-semibold text-ink">
                 {item.title}
               </h3>
-              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-secondary">
+              <p className="mt-2.5 text-[14px] leading-relaxed text-ink-secondary">
                 {item.desc}
               </p>
             </motion.div>

@@ -1,11 +1,12 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
   motion,
   useScroll,
   useTransform,
+  useMotionValueEvent,
   useReducedMotion,
   MotionValue,
 } from "framer-motion";
@@ -16,8 +17,8 @@ type Callout = {
   top: string;
   left: string;
   side: "left" | "right";
-  // scroll-progress window in which this callout reveals
-  range: [number, number];
+  // scroll progress at which this callout snaps into view
+  revealAt: number;
 };
 
 const CALLOUTS: Callout[] = [
@@ -27,7 +28,7 @@ const CALLOUTS: Callout[] = [
     top: "30%",
     left: "42%",
     side: "left",
-    range: [0.12, 0.24],
+    revealAt: 0.16,
   },
   {
     label: "Touch control",
@@ -35,7 +36,7 @@ const CALLOUTS: Callout[] = [
     top: "50%",
     left: "56%",
     side: "right",
-    range: [0.34, 0.46],
+    revealAt: 0.38,
   },
   {
     label: "Precision mic",
@@ -43,35 +44,39 @@ const CALLOUTS: Callout[] = [
     top: "66%",
     left: "50%",
     side: "left",
-    range: [0.56, 0.68],
+    revealAt: 0.6,
   },
 ];
 
 function CalloutMarker({
   c,
   progress,
-  reduce,
 }: {
   c: Callout;
   progress: MotionValue<number>;
-  reduce: boolean;
 }) {
-  const opacity = useTransform(progress, c.range, [0, 1]);
-  const scale = useTransform(progress, c.range, [0.8, 1]);
-  const cardX = useTransform(
-    progress,
-    c.range,
-    [c.side === "right" ? -14 : 14, 0]
-  );
+  // Reveal once the scroll crosses revealAt, and never hide again —
+  // the section is already behind you at that point, so re-hiding on
+  // scroll-up would just make the user redo the same reveal twice.
+  const [shown, setShown] = useState(() => progress.get() >= c.revealAt);
+
+  useMotionValueEvent(progress, "change", (v) => {
+    if (v >= c.revealAt) setShown(true);
+  });
 
   return (
     <motion.div
-      style={{ opacity, top: c.top, left: c.left }}
+      initial={false}
+      animate={{ opacity: shown ? 1 : 0 }}
+      transition={{ duration: 0.28, ease: "easeOut" }}
+      style={{ top: c.top, left: c.left }}
       className="absolute z-10"
     >
       {/* Pulsing dot */}
       <motion.span
-        style={{ scale: reduce ? 1 : scale }}
+        initial={false}
+        animate={{ scale: shown ? 1 : 0.6 }}
+        transition={{ duration: 0.28, ease: "easeOut" }}
         className="relative flex h-3.5 w-3.5"
       >
         <motion.span
@@ -83,8 +88,7 @@ function CalloutMarker({
       </motion.span>
 
       {/* Label card */}
-      <motion.div
-        style={{ x: reduce ? 0 : cardX }}
+      <div
         className={`absolute top-1/2 w-[150px] -translate-y-1/2 sm:w-52 ${
           c.side === "right"
             ? "left-5 text-left sm:left-8"
@@ -97,7 +101,7 @@ function CalloutMarker({
             {c.desc}
           </div>
         </div>
-      </motion.div>
+      </div>
     </motion.div>
   );
 }
@@ -151,12 +155,7 @@ export default function Features() {
             className="object-contain drop-shadow-[0_40px_70px_rgba(20,20,40,0.22)]"
           />
           {CALLOUTS.map((c) => (
-            <CalloutMarker
-              key={c.label}
-              c={c}
-              progress={scrollYProgress}
-              reduce={reduce}
-            />
+            <CalloutMarker key={c.label} c={c} progress={scrollYProgress} />
           ))}
         </motion.div>
       </div>

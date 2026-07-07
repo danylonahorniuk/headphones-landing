@@ -4,6 +4,22 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { easeOutExpo, fadeUp, staggerContainer, viewportOnce } from "@/lib/motion";
 
+const AVATAR_STYLES = [
+  { bg: "#E3F0FF", fg: "#0060DF" },
+  { bg: "#FCE7D9", fg: "#B45309" },
+  { bg: "#DCFCE7", fg: "#15803D" },
+  { bg: "#F3E8FF", fg: "#7E22CE" },
+  { bg: "#E0F2FE", fg: "#0369A1" },
+  { bg: "#FEF3C7", fg: "#A16207" },
+];
+
+function initials(name: string) {
+  const parts = name.trim().split(/\s+/);
+  const first = parts[0]?.[0] ?? "";
+  const second = parts[1]?.replace(/[^A-Za-z]/g, "")[0] ?? "";
+  return (first + second).toUpperCase();
+}
+
 const QUOTES = [
   {
     quote:
@@ -95,23 +111,35 @@ export default function Testimonials() {
           viewport={viewportOnce}
           className="mt-8 grid gap-4 sm:grid-cols-3"
         >
-          {QUOTES.map((q) => (
-            <motion.figure
-              variants={fadeUp}
-              key={q.name}
-              className="flex flex-col justify-between rounded-[24px] border border-divider bg-canvas p-7"
-            >
-              <blockquote className="text-[16px] leading-relaxed text-ink">
-                “{q.quote}”
-              </blockquote>
-              <figcaption className="mt-6">
-                <div className="text-[14px] font-semibold text-ink">
-                  {q.name}
-                </div>
-                <div className="text-[13px] text-ink-muted">{q.role}</div>
-              </figcaption>
-            </motion.figure>
-          ))}
+          {QUOTES.map((q, i) => {
+            const avatar = AVATAR_STYLES[i % AVATAR_STYLES.length];
+            return (
+              <motion.figure
+                variants={fadeUp}
+                key={q.name}
+                className="flex flex-col justify-between rounded-[24px] border border-divider bg-canvas p-7"
+              >
+                <blockquote className="text-[16px] leading-relaxed text-ink">
+                  “{q.quote}”
+                </blockquote>
+                <figcaption className="mt-6 flex items-center gap-3">
+                  <div
+                    className="flex h-10 w-10 flex-none items-center justify-center rounded-full text-[13px] font-semibold"
+                    style={{ backgroundColor: avatar.bg, color: avatar.fg }}
+                    aria-hidden
+                  >
+                    {initials(q.name)}
+                  </div>
+                  <div>
+                    <div className="text-[14px] font-semibold text-ink">
+                      {q.name}
+                    </div>
+                    <div className="text-[13px] text-ink-muted">{q.role}</div>
+                  </div>
+                </figcaption>
+              </motion.figure>
+            );
+          })}
         </motion.div>
       </div>
     </section>

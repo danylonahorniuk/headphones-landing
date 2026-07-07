@@ -70,9 +70,12 @@ export default function Specs() {
         >
           {GROUPS.map((group) => (
             <motion.div key={group.title} variants={fadeUp}>
-              <h3 className="text-[13px] font-semibold uppercase tracking-wider text-ink-muted">
-                {group.title}
-              </h3>
+              <div className="flex items-center gap-2">
+                <span className="h-3 w-1 rounded-full bg-accent" aria-hidden />
+                <h3 className="text-[13px] font-semibold uppercase tracking-wider text-ink">
+                  {group.title}
+                </h3>
+              </div>
               <dl className="mt-3">
                 {group.rows.map(([label, value]) => (
                   <div

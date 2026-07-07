@@ -72,26 +72,26 @@ export default function Comparison() {
           initial="hidden"
           whileInView="visible"
           viewport={viewportOnce}
-          className="mx-auto mt-14 grid max-w-4xl gap-5 md:grid-cols-2"
+          className="mx-auto mt-16 grid max-w-5xl gap-6 md:grid-cols-2"
         >
           {/* Velv */}
           <motion.div
             variants={fadeUp}
-            className="rounded-[28px] border-2 border-accent/25 bg-accent-tint/40 p-8"
+            className="rounded-[36px] border-2 border-accent/25 bg-accent-tint/40 p-10"
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-[19px] font-semibold text-ink">
+              <h3 className="text-[21px] font-semibold text-ink">
                 Velv Open-fit
               </h3>
-              <span className="rounded-full bg-accent px-3 py-1 text-[12px] font-semibold text-white">
+              <span className="rounded-full bg-accent px-3.5 py-1.5 text-[12px] font-semibold text-white">
                 Velv
               </span>
             </div>
-            <ul className="mt-6 space-y-4">
+            <ul className="mt-8 space-y-5">
               {VELV.map((item) => (
-                <li key={item} className="flex items-start gap-3">
+                <li key={item} className="flex items-start gap-3.5">
                   <Check />
-                  <span className="text-[15px] leading-snug text-ink">{item}</span>
+                  <span className="text-[15.5px] leading-snug text-ink">{item}</span>
                 </li>
               ))}
             </ul>
@@ -100,18 +100,18 @@ export default function Comparison() {
           {/* Traditional */}
           <motion.div
             variants={fadeUp}
-            className="rounded-[28px] border border-divider bg-section p-8"
+            className="rounded-[36px] border border-divider bg-section p-10"
           >
             <div className="flex items-center justify-between">
-              <h3 className="text-[19px] font-semibold text-ink-secondary">
+              <h3 className="text-[21px] font-semibold text-ink-secondary">
                 Traditional in-ear
               </h3>
             </div>
-            <ul className="mt-6 space-y-4">
+            <ul className="mt-8 space-y-5">
               {TRADITIONAL.map((item) => (
-                <li key={item} className="flex items-start gap-3">
+                <li key={item} className="flex items-start gap-3.5">
                   <Cross />
-                  <span className="text-[15px] leading-snug text-ink-secondary">
+                  <span className="text-[15.5px] leading-snug text-ink-secondary">
                     {item}
                   </span>
                 </li>
