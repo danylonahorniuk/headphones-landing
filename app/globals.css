@@ -21,6 +21,14 @@ html {
      hides the overflow without creating a scroll container, so the document
      stays the native scroller. */
   overflow-x: clip;
+  /* Disable CSS scroll anchoring. With several 300-340svh pinned sections
+     whose inner content (canvas draws, Framer Motion inline styles) shifts
+     constantly, Chrome's scroll-anchoring heuristic keeps "correcting" the
+     scroll position to compensate for perceived layout shifts — which reads
+     as the page violently jumping between sections when scrolling up.
+     WebKit/Safari doesn't fight the scroll position the same way, which is
+     why this only showed up in Chrome and Chrome-based in-app browsers. */
+  overflow-anchor: none;
 }
 
 body {
