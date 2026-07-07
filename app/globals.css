@@ -14,12 +14,18 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 64px;
+  /* Clip horizontal overflow on the root instead of the body. `overflow-x:
+     hidden` on <body> promotes the body to the scroll container, which
+     breaks the URL-bar hide/show optimisation in Chrome / Telegram in-app
+     browsers and makes scrolling up jump violently between sections. `clip`
+     hides the overflow without creating a scroll container, so the document
+     stays the native scroller. */
+  overflow-x: clip;
 }
 
 body {
   background-color: #fbfbfd;
   color: #1d1d1f;
-  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
