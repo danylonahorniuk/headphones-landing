@@ -9,7 +9,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 
-const FRAME_COUNT = 24;
+const FRAME_COUNT = 48;
 const framePath = (n: number) =>
   `/images/hero-sequence/hero_${String(n).padStart(2, "0")}.png`;
 
