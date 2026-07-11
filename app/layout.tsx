@@ -52,6 +52,17 @@ export default function RootLayout({
   return (
     <html lang="en" className={inter.variable}>
       <body className="font-sans antialiased">
+        {/* Set --vh synchronously, before the sections below are laid out and
+            before Framer Motion's useScroll measures them. Doing it later (in
+            an effect) lets useScroll capture the section at the 1vh-fallback
+            height, then --vh resizes it — leaving stale scroll ranges so the
+            hero animation never reaches its final frames. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "document.documentElement.style.setProperty('--vh',(window.innerHeight*0.01)+'px');",
+          }}
+        />
         <ViewportHeightVar />
         {children}
         <ScrollDebug />

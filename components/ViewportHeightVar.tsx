@@ -31,6 +31,13 @@ export default function ViewportHeightVar() {
     };
     setVh();
 
+    // Belt-and-suspenders: nudge Framer Motion's useScroll to re-measure the
+    // now-correctly-sized sections. (An inline script in the layout already
+    // sets --vh before first paint, but this guarantees the scroll ranges
+    // match if measurement happened to run against the fallback height.) Our
+    // own handler ignores it — same width — so there's no loop.
+    window.dispatchEvent(new Event("resize"));
+
     const onResize = () => {
       // Ignore height-only changes — that's the toolbar animating, not a
       // real resize. Reflowing here is exactly what causes the jump.
