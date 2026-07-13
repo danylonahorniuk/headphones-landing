@@ -137,7 +137,7 @@ export default function Hero() {
             y: reduce ? 0 : productY,
             scale: reduce ? 1 : productScale,
           }}
-          className="relative z-10 mt-[9vh] aspect-square w-[min(68vw,440px,46vh)]"
+          className="relative z-10 mt-[9vh] aspect-square w-[min(68vw,440px)] [@media(max-height:700px)]:w-[min(68vw,440px,46vh)]"
         >
           <div
             style={{
